@@ -8,5 +8,5 @@ models:
         description: "The unique ID of the customer."
       - name: Churn_Risk
         description: "Indicates whether the customer is at risk of churn (1) or not (0)."
-        tests:
+        data_tests:
           - not_null

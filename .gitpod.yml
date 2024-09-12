@@ -1,10 +1,16 @@
 image:
   file: .gitpod.Dockerfile
-
 tasks:
-  - init: bash setup.sh
+  - init: |
+      bash setup.sh
+      dbt debug --profiles-dir .
     command: python3 -m http.server 8000
-
 ports:
   - port: 8000
     onOpen: open-preview
+  - port: 8080
+    onOpen: ignore  # For potential Dagit usage
+vscode:
+  extensions:
+    - innoverio.vscode-dbt-power-user
+    - ms-python.python

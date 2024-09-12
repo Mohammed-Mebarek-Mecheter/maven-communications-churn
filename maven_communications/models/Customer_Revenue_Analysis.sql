@@ -1,4 +1,4 @@
--- models/customer_revenue_analysis.sql
+-- models/Customer_Revenue_Analysis.sql
 
 WITH Customer_Revenue AS (
     SELECT

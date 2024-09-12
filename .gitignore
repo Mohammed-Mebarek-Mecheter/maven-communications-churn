@@ -24,7 +24,14 @@ target/
 *.out
 *.err
 *.pid
+*.csv
+*.dat
+*.seed
+*.pid.lock
 logs
+
+# dbt
+profiles.yml
 
 # Ignore build and temp files
 *.tmp

@@ -1,4 +1,4 @@
--- models/churn_customers.sql
+-- models/Churn_Customers.sql
 
 WITH Raw_Customers AS (
     SELECT

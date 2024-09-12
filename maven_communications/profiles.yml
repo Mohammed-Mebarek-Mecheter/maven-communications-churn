@@ -1,13 +1,14 @@
 maven_communications:
-  target: dev
-  outputs:
-    dev:
-      type: postgres
-      host: https://pyoqrjzwmaakkhmhvozw.supabase.co
-      user: Mebarek
-      password: lin1pHt8@ED43G@T
-      port: 5432
-      dbname: postgres
-      schema: public
-      threads: 4
-      keepalives_idle: 0
+     target: dev
+     outputs:
+       dev:
+         type: postgres
+         host: "{{ env_var('DBT_HOST') }}"
+         user: "{{ env_var('DBT_USER') }}"
+         pass: "{{ env_var('DBT_PASS') }}"
+         port: "{{ env_var('DBT_PORT') | as_number }}"
+         dbname: "{{ env_var('DBT_NAME') }}"
+         schema: public
+         threads: 1
+         keepalives_idle: 0
+         sslmode: require
