@@ -1,0 +1,10 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: bash setup.sh
+    command: python3 -m http.server 8000
+
+ports:
+  - port: 8000
+    onOpen: open-preview

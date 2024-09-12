@@ -1,0 +1,71 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+.env.local
+.env.*.local
+
+# Ignore Gitpod workspace settings (optional, keep if not needed)
+.gitpod/
+
+# Ignore database config (Supabase secrets, credentials)
+supabase.env
+
+# Ignore dbt artifacts
+dbt_modules/
+target/
+
+# Ignore log files and system files
+*.log
+*.out
+*.err
+*.pid
+logs
+
+# Ignore build and temp files
+*.tmp
+*.temp
+*.swp
+
+# Ignore Python package manager artifacts
+*.egg-info/
+dist/
+build/
+eggs/
+wheels/
+pip-log.txt
+
+# Ignore cache directories
+cache/
+*.cache
+
+# Ignore virtual environments (if using locally)
+venv/
+.virtualenv/
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore Node.js directories (if you're using Node tools)
+node_modules/
+
+# Ignore coverage and test result directories
+coverage/
+pytest_cache/
+htmlcov/
+
+# Ignore Docker files (if you're using Docker)
+*.env.docker
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore other IDE/editor specific settings
+.vscode/
+.idea/
+*.code-workspace

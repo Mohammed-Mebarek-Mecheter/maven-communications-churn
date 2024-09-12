@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+plotly
+streamlit
+supabase
+dbt-postgres
+dagster
+dagit
+dagster-postgres
+dagster-dbt

@@ -1,0 +1,13 @@
+maven_communications:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: https://pyoqrjzwmaakkhmhvozw.supabase.co
+      user: Mebarek
+      password: lin1pHt8@ED43G@T
+      port: 5432
+      dbname: postgres
+      schema: public
+      threads: 4
+      keepalives_idle: 0

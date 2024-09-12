@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: Churn_Customers
+    description: "A model to calculate churn risk and customer details."
+    columns:
+      - name: CustomerId
+        description: "The unique ID of the customer."
+      - name: Churn_Risk
+        description: "Indicates whether the customer is at risk of churn (1) or not (0)."
+        tests:
+          - not_null
