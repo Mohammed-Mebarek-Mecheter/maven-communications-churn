@@ -31,5 +31,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   maven_communications:
-    materialized: table
-
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    mart:
+         +materialized: table
