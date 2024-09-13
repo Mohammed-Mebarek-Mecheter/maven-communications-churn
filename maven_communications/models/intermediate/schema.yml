@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: int_churn_risk_factors
+    description: "This intermediate model calculates churn risk factors."
+    columns:
+      - name: CustomerID
+        description: "Unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+      - name: Tenure_Risk
+        description: "Churn risk level based on customer tenure (High, Medium, Low)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High', 'Medium', 'Low']
+      - name: Contract_Risk
+        description: "Churn risk level based on contract type (High, Medium, Low)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High', 'Medium', 'Low']
+      - name: Refund_Risk
+        description: "Churn risk level based on refund history (High or Low)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['High', 'Low']
+
+  - name: int_customer_lifetime_value
+    description: "This intermediate model calculates Customer Lifetime Value (CLV)."
+    columns:
+      - name: CustomerID
+        description: "Unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+      - name: Estimated_5_Year_CLV
+        description: "Estimated 5-year Customer Lifetime Value."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Estimated_5_Year_CLV >= 0"

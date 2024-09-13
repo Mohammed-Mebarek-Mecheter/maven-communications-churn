@@ -16,6 +16,7 @@ __pycache__/
 supabase.env
 
 # Ignore dbt artifacts
+.user.yml
 dbt_modules/
 target/
 

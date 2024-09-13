@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: mart_churn_reasons_analysis
+    description: "This mart model analyzes the reasons for churn and their impact on revenue."
+    columns:
+      - name: Churn_Category
+        description: "Category of churn reason."
+        tests:
+          - not_null
+      - name: Churn_Count
+        description: "Number of customers who churned for each reason."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Churn_Count > 0"
+      - name: Avg_Revenue_Lost
+        description: "Average revenue lost due to churn."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Avg_Revenue_Lost >= 0"
+
+  - name: mart_high_value_customers_at_risk
+    description: "This mart model identifies high-value customers who are at risk of churning."
+    columns:
+      - name: CustomerID
+        description: "Unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+      - name: Estimated_5_Year_CLV
+        description: "Estimated 5-year Customer Lifetime Value."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Estimated_5_Year_CLV >= (SELECT AVG(Estimated_5_Year_CLV) FROM {{ ref('int_customer_lifetime_value') }})"

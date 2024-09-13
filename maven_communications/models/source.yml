@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+    - name: maven_communications
+      dbname: "{{ env_var('DBT_NAME') }}"
+      schema: public
+      tables:
+         - name: telecom_customer_churn
+         - name: telecom_zipcode_population

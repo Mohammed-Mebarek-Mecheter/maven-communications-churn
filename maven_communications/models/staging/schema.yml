@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_telecom_customer_churn
+    description: "This staging model extracts raw customer churn data."
+    columns:
+      - name: CustomerID
+        description: "Unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+      - name: Gender
+        description: "Customer's gender (Male or Female)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Male', 'Female']
+      - name: Age
+        description: "Customer's age in years."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Age >= 0"
+      - name: Total_Revenue
+        description: "Total revenue generated from the customer."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Total_Revenue >= 0"
+      - name: Tenure_in_Months
+        description: "Total number of months the customer has been with the company."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Tenure_in_Months >= 0"
+      - name: Customer_Status
+        description: "Current status of the customer (Stayed, Joined, or Churned)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Stayed', 'Joined', 'Churned']
+
+  - name: stg_telecom_zipcode_population
+    description: "This staging model provides population data for each zip code."
+    columns:
+      - name: Zip_Code
+        description: "The zip code for the geographic area."
+        tests:
+          - unique
+          - not_null
+      - name: Population
+        description: "The estimated population for the zip code area."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "Population > 0"
