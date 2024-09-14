@@ -1,0 +1,17 @@
+/* assets/style.css */
+
+/* KPI Card Styling */
+.kpi-metric {
+    font-size: 24px;
+    color: #FFFFFF;
+    background-color: #1f77b4;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    margin: 10px 0;
+}
+
+/* General Enhancements */
+h1, h2, h3 {
+    color: #FF6347;
+}
