@@ -1,17 +1,17 @@
 -- analyses/customer_segmentation.sql
 WITH customer_segments AS (
     SELECT
-        CustomerID,
+        customerid,
         CASE
-            WHEN Estimated_5_Year_CLV >= 5000 THEN 'High Value'
-            WHEN Estimated_5_Year_CLV >= 2500 THEN 'Medium Value'
+            WHEN estimated_5_year_clv >= 5000 THEN 'High Value'
+            WHEN estimated_5_year_clv >= 2500 THEN 'Medium Value'
             ELSE 'Low Value'
-        END as Customer_Segment
+        END as segment_count
     FROM {{ ref('int_customer_lifetime_value') }}
 )
 SELECT
-    Customer_Segment,
-    COUNT(*) as Segment_Count,
-    AVG(Estimated_5_Year_CLV) as Avg_CLV
+    segment_count,
+    COUNT(*) as segment_count,
+    AVG(estimated_5_year_clv) as avg_clv
 FROM customer_segments
-GROUP BY Customer_Segment
+GROUP BY segment_count

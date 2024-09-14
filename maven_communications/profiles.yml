@@ -1,14 +1,24 @@
 maven_communications:
-     target: dev
-     outputs:
-       dev:
-         type: postgres
-         host: "{{ env_var('DBT_HOST') }}"
-         user: "{{ env_var('DBT_USER') }}"
-         pass: "{{ env_var('DBT_PASS') }}"
-         port: "{{ env_var('DBT_PORT') | as_number }}"
-         dbname: "{{ env_var('DBT_NAME') }}"
-         schema: public
-         threads: 1
-         keepalives_idle: 0
-         sslmode: require
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      pass: "{{ env_var('DBT_PASS') }}"
+      port: "{{ env_var('DBT_PORT') | as_number }}"
+      dbname: "{{ env_var('DBT_NAME') }}"
+      schema: public
+      threads: 1
+      keepalives_idle: 0
+      sslmode: require
+
+  config:
+    warn_error_options:
+      error: # Previously called "include"
+      warn: # Previously called "exclude"
+        - NoNodesForSelectionCriteria
+      silence: # Silence or ignore warnings
+        - TestsConfigDeprecation
+        - NoNodesForSelectionCriteria
+

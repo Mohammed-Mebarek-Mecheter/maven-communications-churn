@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_telecom_customer_churn
-    description: "This staging model extracts raw customer churn data."
+    description: "This staging model extracts raw customer churn utils."
     columns:
       - name: CustomerID
         description: "Unique identifier for each customer."
@@ -27,12 +27,12 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: "Total_Revenue >= 0"
-      - name: Tenure_in_Months
+      - name: tenure_in_months
         description: "Total number of months the customer has been with the company."
         tests:
           - not_null
           - dbt_utils.expression_is_true:
-              expression: "Tenure_in_Months >= 0"
+              expression: "tenure_in_months >= 0"
       - name: Customer_Status
         description: "Current status of the customer (Stayed, Joined, or Churned)."
         tests:
@@ -41,7 +41,7 @@ models:
               values: ['Stayed', 'Joined', 'Churned']
 
   - name: stg_telecom_zipcode_population
-    description: "This staging model provides population data for each zip code."
+    description: "This staging model provides population utils for each zip code."
     columns:
       - name: Zip_Code
         description: "The zip code for the geographic area."

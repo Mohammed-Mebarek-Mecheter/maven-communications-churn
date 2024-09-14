@@ -1,19 +1,19 @@
 -- models/intermediate/int_customer_lifetime_value.sql
-WITH "Customer_Revenue" AS (
+WITH "customer_revenue" AS (
     SELECT
-        "CustomerID",
-        "Tenure_in_Months",
-        "Monthly_Charge",
-        "Total_Revenue",
-        "Total_Revenue" / NULLIF("Tenure_in_Months", 0) AS Average_Monthly_Revenue
+        "customerid",
+        "tenure_in_months",
+        "monthly_charge",
+        "total_revenue",
+        "total_revenue" / NULLIF("tenure_in_months", 0) AS average_monthly_revenue
     FROM {{ ref('stg_telecom_customer_churn') }}
 )
 
 SELECT
-    "CustomerID",
-    "Tenure_in_Months",
-    "Monthly_Charge",
-    "Total_Revenue",
-    Average_Monthly_Revenue,
-    Average_Monthly_Revenue * 12 * 5 AS Estimated_5_Year_CLV
-FROM "Customer_Revenue"
+    "customerid",
+    "tenure_in_months",
+    "monthly_charge",
+    "total_revenue",
+    average_monthly_revenue,
+    average_monthly_revenue * 12 * 5 AS estimated_5_year_clv
+FROM "customer_revenue"

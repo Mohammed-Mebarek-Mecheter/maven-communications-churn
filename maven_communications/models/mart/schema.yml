@@ -8,6 +8,8 @@ models:
         description: "Category of churn reason."
         tests:
           - not_null
+          - accepted_values:
+              values: ['Attitude', 'Dissatisfaction', 'Other', 'Price']
       - name: Churn_Count
         description: "Number of customers who churned for each reason."
         tests:

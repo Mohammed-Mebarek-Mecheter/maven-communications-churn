@@ -1,11 +1,13 @@
-pandas
+pandas~=2.2.2
 numpy
 scikit-learn
 plotly
-streamlit
+streamlit~=1.38.0
 supabase
 dbt-postgres
 dagster
 dagit
 dagster-postgres
 dagster-dbt
+st-supabase-connection
+streamlit-option-menu
