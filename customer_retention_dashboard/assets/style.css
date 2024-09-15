@@ -15,3 +15,40 @@
 h1, h2, h3 {
     color: #FF6347;
 }
+
+.metric-card {
+    background-color: #262730;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    transform-origin: center;
+}
+
+.metric-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #ff5533;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 1rem;
+    color: #ff5533;
+    margin-top: 0.5rem;
+}
+
+/* Option Menu Styling */
+.option-menu-container {
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0d9cf;
+}

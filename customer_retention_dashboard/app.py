@@ -1,118 +1,111 @@
 # app.py
 import streamlit as st
-import pandas as pd
-import plotly.express as px
 from streamlit_option_menu import option_menu
-import joblib
+from app import overview, churn_reasons, high_value_risk, segmentation, churn_prediction, retention_strategies
 from utils.load_data import load_customer_churn_data
 from utils.clean_data import clean_customer_data
-from utils.transform_data import transform_data
-from components.metric_cards import display_kpis
-from components.filters import apply_segmentation_filters
-import config
+from streamlit_lottie import st_lottie
+import json
 
 # Page Configuration
-st.set_page_config(page_title="Customer Retention Dashboard", layout="wide")
+st.set_page_config(page_title="Customer Retention Dashboard", page_icon="📊", layout="wide")
 
-# Custom CSS
+# Load custom CSS and favicon/logo
 def load_custom_css():
     with open("assets/style.css") as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 load_custom_css()
 
+# Sidebar with metrics
+st.sidebar.image("assets/company_logo.jpg", width=150)
+df = clean_customer_data(load_customer_churn_data())
+st.sidebar.metric("Total Customers", f"{len(df):,}")
+st.sidebar.metric("Churned Customers", f"{len(df[df['customer_status'] == 'Churned']):,}")
+
+#st.sidebar.markdown("---")
 # Sidebar Menu
-with st.sidebar:
-    selected = option_menu(
-        "Maven Communications Dashboard",
-        ["Overview", "Churn Reasons", "High-Value Customers", "Customer Segmentation"],
-        icons=["house", "bar-chart", "star", "pie-chart"],
-        menu_icon="cast",
-        default_index=0,
-    )
+selected = option_menu(
+    menu_title=None,
+    options=["Overview", "Churn Analysis", "High-Value Customers", "Customer Segmentation", "Churn Prediction", "Retention Strategies"],
+    icons=["house", "bar-chart", "star", "pie-chart", "graph-up", "people"],
+    menu_icon="cast", orientation="horizontal",
+    default_index=0,
+)
 
-# Load and preprocess data
-df = load_customer_churn_data()
-df = clean_customer_data(df)
-df = transform_data(df)
-
-# Load pre-trained model
-model = joblib.load('models/churn_model.pkl')
-
-# Overview Page
+# Render selected page
 if selected == "Overview":
-    st.title("Maven Communications: Customer Retention Overview")
-
-    # KPIs
-    overall_churn_rate = (df['customer_status'] == 'Churned').mean() * 100
-    high_value_churn_rate = df[df['estimated_5_year_clv'] > df['estimated_5_year_clv'].median()]['customer_status'].eq('Churned').mean() * 100
-    total_revenue_lost = df[df['customer_status'] == 'Churned']['total_revenue'].sum()
-    customers_at_risk = df[df['tenure_risk'] == 'High'].shape[0]
-
-    # Display KPIs
-    display_kpis(overall_churn_rate, high_value_churn_rate, total_revenue_lost, customers_at_risk)
-
-    # Churn by Customer Segment
-    st.markdown("## Churn by Customer Segment")
-    segment_options = st.selectbox("Select Customer Segment", ["gender", "age", "contract"])
-    fig_segment = px.bar(df[df['customer_status'] == 'Churned'].groupby(segment_options).size().reset_index(name='count'),
-                         x=segment_options, y='count', title=f"Churn by {segment_options.capitalize()}")
-    st.plotly_chart(fig_segment, use_container_width=True)
-
-# Churn Reasons Page
-elif selected == "Churn Reasons":
-    st.title("Churn Reasons Analysis")
-
-    # Filter by churn category
-    churn_categories = df['churn_category'].dropna().unique().tolist()
-    selected_categories = st.multiselect("Select Churn Categories", churn_categories, default=churn_categories)
-
-    # Apply filter
-    filtered_df = df[df['churn_category'].isin(selected_categories)]
-
-    # Treemap for Churn Reasons
-    st.markdown("### Revenue Lost by Churn Reason")
-    fig_churn_reason = px.treemap(filtered_df, path=['churn_category', 'churn_reason'],
-                                  values='total_revenue', title="Revenue Lost by Churn Reason")
-    st.plotly_chart(fig_churn_reason, use_container_width=True)
-
-# High-Value Customers Page
+    overview.main()
+elif selected == "Churn Analysis":
+    churn_reasons.main()
 elif selected == "High-Value Customers":
-    st.title("High-Value Customers at Risk")
-
-    # Filter for high-value customers
-    high_value_customers = df[df['estimated_5_year_clv'] > df['estimated_5_year_clv'].median()]
-    high_risk_customers = high_value_customers[high_value_customers['tenure_risk'] == 'High']
-
-    # KPI: High-Value Customers at Risk
-    num_high_value_at_risk = high_risk_customers.shape[0]
-    total_revenue_at_risk = high_risk_customers['estimated_5_year_clv'].sum()
-
-    st.metric("High-Value Customers at Risk", num_high_value_at_risk)
-    st.metric("Estimated Revenue at Risk", f"${total_revenue_at_risk:,.2f}")
-
-    # Customer Cluster Scatter Plot
-    st.markdown("### High-Value Customer Clusters")
-    fig_scatter = px.scatter(high_value_customers, x='tenure_in_months', y='estimated_5_year_clv',
-                             size='monthly_charge', color='contract', title="High-Value Customer Clusters")
-    st.plotly_chart(fig_scatter, use_container_width=True)
-
-# Customer Segmentation Page
+    high_value_risk.main()
 elif selected == "Customer Segmentation":
-    st.title("Customer Segmentation Analysis")
+    segmentation.main()
+elif selected == "Churn Prediction":
+    churn_prediction.main()
+elif selected == "Retention Strategies":
+    retention_strategies.main()
 
-    # Apply segmentation filters from filters.py
-    filtered_df = apply_segmentation_filters(df)
+def load_lottie_file(filepath: str):
+    """Function to load a Lottie animation from a JSON file."""
+    try:
+        with open(filepath, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        st.error(f"Lottie file not found: {filepath}")
+        return None
 
-    # Risk Group Segmentation
-    st.markdown("### Risk Group Segmentation")
-    fig_risk_group = px.bar(filtered_df.groupby('tenure_risk').size().reset_index(name='count'),
-                            x='tenure_risk', y='count', title="Customers by Risk Group")
-    st.plotly_chart(fig_risk_group, use_container_width=True)
+def sidebar_lottie_animations():
+    """Load and display Lottie animations for GitHub, LinkedIn, and Portfolio in the sidebar."""
+    # Paths to Lottie JSON files
+    lottie_github_path = "assets/images/github.json"
+    lottie_linkedin_path = "assets/images/linkedin.json"
+    lottie_portfolio_path = "assets/images/profile.json"
 
-    # Geographical Churn Heatmap
-    st.markdown("### Geographical Churn Heatmap")
-    fig_geo = px.scatter_mapbox(filtered_df, lat='latitude', lon='longitude',
-                                size='estimated_5_year_clv', color='tenure_risk',
-                                mapbox_style="open-street-map", title="Customer Segmentation by Geography")
-    st.plotly_chart(fig_geo, use_container_width=True)
+    # Load Lottie animations
+    lottie_github = load_lottie_file(lottie_github_path)
+    lottie_linkedin = load_lottie_file(lottie_linkedin_path)
+    lottie_portfolio = load_lottie_file(lottie_portfolio_path)
+
+    # Sidebar Lottie Animations with Links
+    with st.sidebar.expander('### About Me'):
+        st.markdown(
+            """
+            <div style='text-align: center;'>
+                <h3>Made with ❤️ by Mebarek</h3>
+                <p>Connect with me:</p>
+            </div>
+            """, unsafe_allow_html=True
+        )
+
+        # GitHub
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            st_lottie(lottie_github, height=30, width=30, key="lottie_github_sidebar")
+        with col2:
+            st.markdown("<a href='https://github.com/Mohammed-Mebarek-Mecheter/' target='_blank'>GitHub</a>", unsafe_allow_html=True)
+
+        # LinkedIn
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            st_lottie(lottie_linkedin, height=30, width=30, key="lottie_linkedin_sidebar")
+        with col2:
+            st.markdown("<a href='https://www.linkedin.com/in/mohammed-mecheter/' target='_blank'>LinkedIn</a>", unsafe_allow_html=True)
+
+        # Portfolio
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            st_lottie(lottie_portfolio, height=30, width=30, key="lottie_portfolio_sidebar")
+        with col2:
+            st.markdown("<a href='https://mebarek.pages.dev/' target='_blank'>Portfolio</a>", unsafe_allow_html=True)
+
+        st.markdown(
+            """
+            <div style='text-align: center;'>
+                <p>Data source: <a href="https://mavenanalytics.io/challenges/maven-churn-challenge/8b3b32ff-fb5b-43ff-9fbf-c11f30ee14fe">Maven Analytics</a> | Last update: September 16, 2024</p>
+            </div>
+            """, unsafe_allow_html=True
+        )
+
+sidebar_lottie_animations()

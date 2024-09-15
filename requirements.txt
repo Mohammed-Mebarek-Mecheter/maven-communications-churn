@@ -11,3 +11,5 @@ dagster-postgres
 dagster-dbt
 st-supabase-connection
 streamlit-option-menu
+wordcloud
+pydeck

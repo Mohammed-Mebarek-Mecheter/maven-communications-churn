@@ -2,7 +2,6 @@
 import os
 import pandas as pd
 import streamlit as st
-from customer_retention_dashboard import config
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -16,8 +15,8 @@ def get_supabase_connection():
         name="supabase",
         type=SupabaseConnection,
         ttl=None,
-        url=config.SUPABASE_URL,
-        key=config.SUPABASE_KEY,
+        url=os.environ.get("SUPABASE_URL"),
+        key=os.environ.get("SUPABASE_KEY"),
     )
 
 def load_data(table_name: str) -> pd.DataFrame:

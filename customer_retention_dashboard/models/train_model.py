@@ -22,16 +22,11 @@ def train_churn_model(df):
     # Define features and target
     feature_cols = ['tenure_in_months', 'monthly_charge', 'total_revenue', 'number_of_dependents']
 
-    # One-hot encode the 'contract' column
-    df = pd.get_dummies(df, columns=['contract'], drop_first=True)
+    # One-hot encode the 'contract' and other categorical columns
+    df = pd.get_dummies(df, columns=['contract', 'internet_service', 'online_security'], drop_first=True)
 
-    # Check the available one-hot encoded columns
-    contract_columns = [col for col in df.columns if 'contract' in col]
-    if not contract_columns:
-        raise KeyError("Expected one-hot encoded columns for 'contract' are missing.")
-
-    # Add the one-hot encoded contract columns to the feature list
-    feature_cols += contract_columns
+    # Add the one-hot encoded columns to the feature list
+    feature_cols += [col for col in df.columns if col.startswith(('contract_', 'internet_service_', 'online_security_'))]
 
     # Prepare training data (X) and target (y)
     X = df[feature_cols]
@@ -49,9 +44,10 @@ def train_churn_model(df):
     accuracy = accuracy_score(y_test, y_pred)
     print(f"Model Accuracy: {accuracy:.2f}")
 
-    # Save the trained model to disk
+    # Save the trained model and feature columns to disk
     joblib.dump(model, 'churn_model.pkl')
-    print("Model saved to 'models/churn_model.pkl'")
+    joblib.dump(feature_cols, 'churn_model_features.pkl')  # Save the feature names
+    print("Model and feature columns saved to 'models/churn_model.pkl' and 'models/churn_model_features.pkl'")
 
 if __name__ == "__main__":
     # Train the model

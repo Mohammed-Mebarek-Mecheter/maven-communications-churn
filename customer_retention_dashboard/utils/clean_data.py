@@ -3,7 +3,7 @@ import pandas as pd
 
 def clean_customer_data(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Clean the telecom customer churn data.
+    Clean the telecom customer churn data with additional validations and transformations.
     """
     # Drop rows without customer ID
     df.dropna(subset=['customerid'], inplace=True)
@@ -16,6 +16,10 @@ def clean_customer_data(df: pd.DataFrame) -> pd.DataFrame:
     numerical_cols = ['number_of_dependents', 'avg_monthly_long_distance_charges',
                       'avg_monthly_gb_download', 'monthly_charge', 'total_revenue', 'total_charges']
     df[numerical_cols] = df[numerical_cols].fillna(0)
+
+    # Remove outliers and invalid data
+    df = df[df['tenure_in_months'] >= 0]  # Remove invalid tenure
+    df['monthly_charge'] = df['monthly_charge'].clip(lower=0)  # Monthly charge should not be negative
 
     # Convert columns to appropriate types
     df['tenure_in_months'] = df['tenure_in_months'].astype(int, errors='ignore')
