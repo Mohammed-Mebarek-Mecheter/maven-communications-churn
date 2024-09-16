@@ -35,7 +35,7 @@ def clean_zipcode_population_data(df: pd.DataFrame) -> pd.DataFrame:
     Clean the zipcode population data.
     """
     df.dropna(subset=['zip_code'], inplace=True)
-    df['population'].fillna(df['population'].median(), inplace=True)
+    df['population'] = df['population'].fillna(df['population'].median())
     df['zip_code'] = df['zip_code'].astype(str)
 
     return df

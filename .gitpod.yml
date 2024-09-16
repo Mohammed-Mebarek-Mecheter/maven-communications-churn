@@ -4,17 +4,22 @@ tasks:
   - init: |
       bash setup.sh
       dbt debug --profiles-dir .
-    command: dbt docs generate && dbt docs serve --port 8080 --host 127.0.0.1
+      set PYTHONLEGACYWINDOWSSTDIO=1
+    command: |
+      dbt docs generate && dbt docs serve --port 8080 --host 127.0.0.1 &
+      dagster dev
 jetbrains:
-    pycharm:
-        plugins:
-            - zielu.gittoolbox
-            - izhangzhihao.rainbow.brackets
+  pycharm:
+    plugins:
+      - zielu.gittoolbox
+      - izhangzhihao.rainbow.brackets
 ports:
   - port: 8080
     onOpen: open-preview
   - port: 8000
     onOpen: ignore
+  - port: 3000
+    onOpen: open-preview
 vscode:
   extensions:
     - innoverio.vscode-dbt-power-user

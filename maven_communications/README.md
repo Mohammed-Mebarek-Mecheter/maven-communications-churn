@@ -103,7 +103,7 @@ maven_communications/
 │       └── schema.yml
 ├── tests/                 # Contains custom tests
 ├── macros/                # Contains custom macros (if needed)
-└── dbt_project.yml        # Project configuration file
+└── dbt.yml        # Project configuration file
 ```
 
 - **Staging models** are in the `models/staging/` directory.

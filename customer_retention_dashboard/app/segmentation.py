@@ -30,7 +30,7 @@ def main():
 
     # Risk Group Segmentation - Enhanced
     st.subheader("Risk Group Segmentation")
-    risk_group_count = filtered_df.groupby('tenure_risk').size().reset_index(name='count')
+    risk_group_count = filtered_df.groupby('tenure_risk', observed=True).size().reset_index(name='count')
     fig_risk_group = px.pie(risk_group_count, values='count', names='tenure_risk',
                             title="Customer Distribution by Risk Group", hole=0.3)
     st.plotly_chart(fig_risk_group, use_container_width=True)
@@ -39,12 +39,12 @@ def main():
     st.subheader("Customer Segmentation by Contract and Internet Type")
     col1, col2 = st.columns(2)
     with col1:
-        contract_count = filtered_df.groupby('contract').size().reset_index(name='count')
+        contract_count = filtered_df.groupby('contract', observed=True).size().reset_index(name='count')
         fig_contract = px.pie(contract_count, values='count', names='contract', title="Customers by Contract Type")
         st.plotly_chart(fig_contract, use_container_width=True)
 
     with col2:
-        internet_count = filtered_df.groupby('internet_type').size().reset_index(name='count')
+        internet_count = filtered_df.groupby('internet_type', observed=True).size().reset_index(name='count')
         fig_internet = px.pie(internet_count, values='count', names='internet_type', title="Customers by Internet Type")
         st.plotly_chart(fig_internet, use_container_width=True)
 
