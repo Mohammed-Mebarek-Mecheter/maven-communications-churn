@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+plotly
+streamlit
+streamlit-lottie
+supabase
+st-supabase-connection
+streamlit-option-menu
+wordcloud
+pydeck
