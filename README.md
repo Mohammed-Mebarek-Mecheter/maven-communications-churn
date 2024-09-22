@@ -24,6 +24,8 @@ The **Streamlit dashboard** offers a user-friendly, interactive interface that p
 - **Customer Segmentation**: Segments customers by risk level, contract type, internet service, and geographical location.
 - **Retention Strategies**: Provides actionable recommendations to retain customers who are at risk of churning.
 
+You can find the dashboard on [huggingface space](https://huggingface.co/spaces/Mebarek/maven-communications-churn).
+![maven-communications-churn.png](customer_retention_dashboard%2Fmaven-communications-churn.png)
 ### 2. **dbt (Data Build Tool)**
 
 **dbt** powers the data transformation pipeline, turning raw data from **Supabase** into clean, reliable datasets that feed into the Streamlit dashboard. The dbt pipeline processes key metrics such as **Customer Lifetime Value (CLV)**, **churn risk factors**, and **revenue at risk** to help the business understand customer behavior better.

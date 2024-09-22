@@ -9,3 +9,4 @@ st-supabase-connection
 streamlit-option-menu
 wordcloud
 pydeck
+python-dotenv
